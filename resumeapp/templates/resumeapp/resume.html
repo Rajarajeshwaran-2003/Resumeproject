@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ resume.full_name }} - Resume</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 2cm;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        .resume-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #007bfc;
+        }
+
+        .contact-info {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+            border-bottom: 2px solid #007bfc;
+            margin-top: 30px;
+            padding-bottom: 5px;
+            color: #444;
+        }
+
+        p {
+            margin: 8px 0;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007bfc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #005bb5;
+        }
+
+        @media print {
+            .download-btn {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .resume-container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="download-btn" onclick="downloadDoc()">Download as Word</button>
+
+    <div class="resume-container">
+        <h1>{{ resume.full_name }}</h1>
+        <div class="contact-info">
+            Email: {{ resume.email }} | Phone: {{ resume.phone }}
+        </div>
+
+        <h2>Professional Summary</h2>
+        <p>{{ resume.summary }}</p>
+
+        <h2>Skills</h2>
+        <p>{{ resume.skills }}</p>
+
+        <h2>Experience</h2>
+        <p>{{ resume.experience }}</p>
+
+        <h2>Education</h2>
+        <p>{{ resume.education }}</p>
+    </div>
+
+    <script>
+        function downloadDoc() {
+            const header = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                      xmlns:w='urn:schemas-microsoft-com:office:word'
+                      xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>Resume</title></head><body>`;
+            const footer = "</body></html>";
+            const content = document.querySelector(".resume-container").innerHTML;
+            const sourceHTML = header + content + footer;
+
+            const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+            const fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            fileDownload.href = source;
+            fileDownload.download = "{{ resume.full_name|slugify }}_Resume.doc";
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+        }
+    </script>
+</body>
+</html>

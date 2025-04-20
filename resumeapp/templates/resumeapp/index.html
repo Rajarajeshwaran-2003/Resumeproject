@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Form</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'resumeapp/css/style.css' %}">
+    <style>
+        body {
+            background: url("{% static 'resumeapp/images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>ATS Resume Builder</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="full_name" placeholder="Full Name" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="text" name="phone" placeholder="Phone Number" required><br>
+            <textarea name="summary" placeholder="Professional Summary" required></textarea><br>
+            <textarea name="skills" placeholder="Skills (comma separated)" required></textarea><br>
+            <textarea name="experience" placeholder="Work Experience" required></textarea><br>
+            <textarea name="education" placeholder="Education" required></textarea><br>
+            <button type="submit">Generate Resume</button>
+        </form>
+    </div>
+</body>
+</html>
